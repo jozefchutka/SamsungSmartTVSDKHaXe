@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<title>SamsungSDK with HaXe</title>
+		
+		<script type="text/javascript" language="javascript" src="$MANAGER_WIDGET/Common/API/Widget.js"></script>
+		<script type="text/javascript" language="javascript" src="$MANAGER_WIDGET/Common/API/TVKeyValue.js"></script>
+		<script type="text/javascript" language="javascript" src="javascript/Main.js"></script>
+		
+		<link type="text/css" rel="stylesheet" href="css/Main.css">
+	</head>
+	<body onload="Main.onLoad();" onunload="Main.onUnload();">
+		<!-- Dummy anchor as focus for key events -->
+		<a href="javascript:void(0);" id="anchor" onkeydown="Main.keyDown(event);"></a>
+		
+		<!-- TODO: your code here -->
+		<h1 style="color:white;">hello world</h1>
+	</body>
+</html>

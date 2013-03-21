@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="Haxetest" default="compile">
+	<property name="TARGET" value="bin"/>
+	<property name="SAMSUNG_SDK_DIR" value=""/>
+	
+	<taskdef resource="net/wildwinter/anthx/anthx.properties"
+		classpath="anthx/libs/AntHX.jar"/>
+	
+	<target name="clean">
+		<echo message="Cleaning bin"/>
+		<delete dir="${TARGET}"/>
+	</target>
+	
+	<target name="compile" depends="clean">
+		<echo message="Compiling HaXe sources"/>
+		<copy todir="${TARGET}">
+			<fileset dir="src/main/resources"/>
+		</copy>
+		<mkdir dir="${TARGET}/javascript"/>
+		<haxe hxml="build.hxml"/>
+	</target>
+	
+	<target name="package" depends="compile">
+		<echo message="Packaging application"/>
+	</target>
+	
+	<target name="deploy-for-emulator">
+		<echo message="Deploying app for emulator"/>
+		<property name="EMULATOR_DIR" value="${SAMSUNG_SDK_DIR}/apps/_temp_"/>
+		<delete dir="${EMULATOR_DIR}"/>
+		<copy todir="${EMULATOR_DIR}">
+			<fileset dir="${TARGET}"/>
+		</copy>
+	</target>
+	
+	<target name="emulator" depends="package,deploy-for-emulator">
+		<echo message="Running emulator"/>
+		<exec executable="${SAMSUNG_SDK_DIR}/Emulator/Emulator2013_v4/bin/Emulator2.exe">
+			<arg value="kEclipse"/>
+			<arg value="_temp_"/>
+		</exec>
+	</target>
+	
+	<target name="emulatorwi" depends="package,deploy-for-emulator">
+		<echo message="Running emulator with web inspector"/>
+		<exec executable="${SAMSUNG_SDK_DIR}/Emulator/Emulator2013_v4/bin/Emulator2.exe">
+			<arg value="kEclipseWI"/>
+			<arg value="_temp_"/>
+		</exec>
+	</target>
+</project>
