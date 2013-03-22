@@ -9,4 +9,11 @@
 	<natures>
 		<nature>eclihx.core.haxenature</nature>
 	</natures>
+	<linkedResources>
+		<link>
+			<name>lib</name>
+			<type>2</type>
+			<location>C:/Users/jozef.chutka/work/haxe/SamsungSmartTVSDKHaXe/lib</location>
+		</link>
+	</linkedResources>
 </projectDescription>

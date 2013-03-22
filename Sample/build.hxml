@@ -1,4 +1,5 @@
 -cp src/main/haxe
--js bin/javascript/Main.js
+-cp ../lib
+-js gen/javascript/Main.js
 -main sk.yoz.tv.samsung.sample.Main
 -debug

@@ -3,8 +3,8 @@ package sk.yoz.tv.samsung.sample;
 import js.Browser;
 import js.Lib;
 import js.html.KeyboardEvent;
-import sk.yoz.tv.samsung.sample.externs.Widget;
-import sk.yoz.tv.samsung.sample.externs.TVKeyValue;
+import samsung.tv.v4.common.api.Widget;
+import samsung.tv.v4.common.api.TVKeyValue;
 
 class Main
 {
@@ -46,35 +46,19 @@ class Main
 	{
 		var keyCode = event.keyCode;
 		Lib.alert("Key pressed:" + keyCode + " " + tvKey.KEY_RETURN);
-		
-		/*
-		switch(keyCode)
+
+		if(keyCode == tvKey.KEY_RETURN)
 		{
-			case tvKey.KEY_RETURN:
-			case tvKey.KEY_PANEL_RETURN:
-				alert("RETURN");
-				widgetAPI.sendReturnEvent();
-				break;
-			case tvKey.KEY_LEFT:
-				alert("LEFT");
-				break;
-			case tvKey.KEY_RIGHT:
-				alert("RIGHT");
-				break;
-			case tvKey.KEY_UP:
-				alert("UP");
-				break;
-			case tvKey.KEY_DOWN:
-				alert("DOWN");
-				break;
-			case tvKey.KEY_ENTER:
-			case tvKey.KEY_PANEL_ENTER:
-				alert("ENTER");
-				break;
-			default:
-				alert("Unhandled key");
-				break;
+			Lib.alert("RETURN");
+			widgetAPI.sendReturnEvent();
 		}
-		*/
+		else if(keyCode == tvKey.KEY_LEFT)
+		{
+			Lib.alert("LEFT");
+		}
+		else
+		{
+			Lib.alert("Unhandled key");
+		}
 	}
 }

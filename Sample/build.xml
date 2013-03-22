@@ -1,27 +1,76 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project name="Haxetest" default="compile">
-	<property name="TARGET" value="bin"/>
+<project name="Sample" default="compile">
+	<!-- Target directory for compiled sources -->
+	<property name="TARGET_GEN" value="gen"/>
+	
+	<!-- Target directory for package -->
+	<property name="TARGET_BIN" value="bin"/>
+	
+	<!-- Target directory for deploy app (defined in runtime via -D...) -->
+	<property name="TARGET_DEPLOY" value=""/>
+	
+	<!-- Target directory for deploy widgetlist.xml (defined in runtime via -D...) -->
+	<property name="TARGET_DEPLOY_WIDGETLIST" value=""/>
+	
+	<!-- Samsung sdk (defined in runtime via -D...) -->
 	<property name="SAMSUNG_SDK_DIR" value=""/>
+	
+	<!-- ID of the application used for packaging -->
+	<property name="APP_ID" value="${ant.project.name}"/>
+	
+	<!-- Name of the application -->
+	<property name="APP_TITLE" value="${ant.project.name}"/>
+	
+	<!-- Description of the application for packaging -->
+	<property name="APP_DESCRIPTION" value="Sample application"/>
+	
+	<!-- Name of packaged application file -->
+	<property name="APP_FILENAME" value="${APP_ID}.zip"/>
+	
+	<!-- Download link for packaged content (defined in runtime via -D...) -->
+	<property name="APP_DOWNLOAD_LINK" value=""/>
 	
 	<taskdef resource="net/wildwinter/anthx/anthx.properties"
 		classpath="anthx/libs/AntHX.jar"/>
 	
 	<target name="clean">
-		<echo message="Cleaning bin"/>
-		<delete dir="${TARGET}"/>
+		<echo message="Cleaning ${TARGET_GEN}, ${TARGET_BIN}"/>
+		<delete dir="${TARGET_GEN}"/>
+		<delete dir="${TARGET_BIN}"/>
 	</target>
 	
 	<target name="compile" depends="clean">
-		<echo message="Compiling HaXe sources"/>
-		<copy todir="${TARGET}">
+		<echo message="Compiling sources to ${TARGET_GEN}"/>
+		<copy todir="${TARGET_GEN}">
 			<fileset dir="src/main/resources"/>
 		</copy>
-		<mkdir dir="${TARGET}/javascript"/>
+		<mkdir dir="${TARGET_GEN}/javascript"/>
 		<haxe hxml="build.hxml"/>
 	</target>
 	
 	<target name="package" depends="compile">
-		<echo message="Packaging application"/>
+		<property name="APP_FILE" value="${TARGET_BIN}/${APP_FILENAME}"/>
+		<property name="APP_WIDGETLIST" value="${TARGET_BIN}/widgetlist.xml"/>
+		<echo message="Packaging application to ${APP_FILE}, ${APP_WIDGETLIST}"/>
+		<zip destfile="${APP_FILE}" basedir="${TARGET_GEN}"/>
+		<length property="APP_FILESIZE" file="${APP_FILE}" />
+		<copy file="src/main/templates/widgetlist.xml" tofile="${APP_WIDGETLIST}">
+			<filterchain>
+				<replacetokens>
+					<token key="ID" value="${APP_ID}"/>
+					<token key="TITLE" value="${APP_TITLE}"/>
+					<token key="FILESIZE" value="${APP_FILESIZE}"/>
+					<token key="DESCRIPTION" value="${APP_DESCRIPTION}"/>
+					<token key="DOWNLOAD_LINK" value="${APP_DOWNLOAD_LINK}"/>
+				</replacetokens>
+			</filterchain>
+		</copy>
+	</target>
+	
+	<target name="deploy" depends="package">
+		<echo message="Deploying application to ${TARGET_DEPLOY}/${APP_FILENAME}, ${TARGET_DEPLOY_WIDGETLIST}/widgetlist.xml"/>
+		<copy file="${TARGET_BIN}/${APP_FILENAME}" tofile="${TARGET_DEPLOY}/${APP_FILENAME}" overwrite="true"/>
+		<copy file="${TARGET_BIN}/widgetlist.xml" tofile="${TARGET_DEPLOY_WIDGETLIST}/widgetlist.xml" overwrite="true"/>
 	</target>
 	
 	<target name="deploy-for-emulator">
@@ -29,7 +78,7 @@
 		<property name="EMULATOR_DIR" value="${SAMSUNG_SDK_DIR}/apps/_temp_"/>
 		<delete dir="${EMULATOR_DIR}"/>
 		<copy todir="${EMULATOR_DIR}">
-			<fileset dir="${TARGET}"/>
+			<fileset dir="${TARGET_GEN}"/>
 		</copy>
 	</target>
 	
