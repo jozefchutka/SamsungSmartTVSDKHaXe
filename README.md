@@ -9,3 +9,7 @@ run ant with following arguments:
 *   -DAPP_DOWNLOAD_LINK="http://172.16.193.191/Widget/Sample.zip"
 
 and add AntHX.jar into classpath (-lib)
+
+Tags
+----
+basic - basic project with Samsung Smart TV SDK and HaXe sources, build.xml with proper targets
