@@ -12,4 +12,5 @@ and add AntHX.jar into classpath (-lib)
 
 Tags
 ----
-basic - basic project with Samsung Smart TV SDK and HaXe sources, build.xml with proper targets
+*   **basic** - basic project with Samsung Smart TV SDK and HaXe sources, build.xml with proper targets
+*   **tests** - implemented unit tests with JUnit support
