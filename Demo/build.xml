@@ -43,7 +43,7 @@
 		<delete dir="${TARGET_TEST}"/>
 	</target>
 	
-	<target name="test" depends="clean">
+	<target name="test" depends="clean" unless="skipTests">
 		<echo message="Testing sources and reporting to ${TARGET_TEST}"/>
 		<mkdir dir="${TARGET_TEST}"/>
 		
