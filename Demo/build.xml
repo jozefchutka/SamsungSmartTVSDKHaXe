@@ -1,10 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project name="Sample" default="compile">
+<project name="Demo" default="compile">
 	<!-- Target directory for compiled sources -->
 	<property name="TARGET_GEN" value="gen"/>
 	
 	<!-- Target directory for package -->
 	<property name="TARGET_BIN" value="bin"/>
+	
+	<!-- Target directory for tests -->
+	<property name="TARGET_TEST" value="test"/>
 	
 	<!-- Target directory for deploy app (defined in runtime via -D...) -->
 	<property name="TARGET_DEPLOY" value=""/>
@@ -34,18 +37,61 @@
 		classpath="anthx/libs/AntHX.jar"/>
 	
 	<target name="clean">
-		<echo message="Cleaning ${TARGET_GEN}, ${TARGET_BIN}"/>
+		<echo message="Cleaning ${TARGET_GEN}, ${TARGET_BIN}, ${TARGET_TEST}"/>
 		<delete dir="${TARGET_GEN}"/>
 		<delete dir="${TARGET_BIN}"/>
+		<delete dir="${TARGET_TEST}"/>
 	</target>
 	
-	<target name="compile" depends="clean">
+	<target name="test" depends="clean">
+		<echo message="Testing sources and reporting to ${TARGET_TEST}"/>
+		<mkdir dir="${TARGET_TEST}"/>
+		
+		<exec executable="haxelib">
+			<arg value="run"/>
+			<arg value="munit"/>
+			<arg value="config"/>
+			<arg value="-src"/><arg value="src/test/haxe"/>
+			<arg value="-bin"/><arg value="${TARGET_TEST}"/>
+			<arg value="-report"/><arg value="${TARGET_TEST}/report"/>
+			<arg value="-classPath"/><arg value="src/main/haxe,../lib"/>
+			<arg value="-hxml"/><arg value="test.hxml"/>
+		</exec>
+		
+		<delete file="src/test/haxe/ExampleTest.hx"/>
+		
+		<exec executable="haxelib">
+			<arg value="run"/>
+			<arg value="munit"/>
+			<arg value="test"/>
+			<arg value="-js"/>
+			<arg value="-kill-browser"/>
+		</exec>
+		
+		<delete file="src/test/haxe/TestSuite.hx"/>
+		<delete file="test.hxml"/>
+		<delete file=".munit"/>
+		
+		<fail message="Tests failed">
+			<condition>
+				<resourcecontains resource="${TARGET_TEST}/report/test/results.txt" substring="FAILED"/>
+			</condition>
+		</fail>
+	</target>
+	
+	<target name="compile" depends="test">
 		<echo message="Compiling sources to ${TARGET_GEN}"/>
 		<copy todir="${TARGET_GEN}">
 			<fileset dir="src/main/resources"/>
 		</copy>
 		<mkdir dir="${TARGET_GEN}/javascript"/>
-		<haxe hxml="build.hxml"/>
+		<haxe2js main="sk.yoz.tv.samsung.demo.Main" out="gen/javascript/Main.js">
+			<classpath>
+				<pathelement location="src/main/haxe"/>
+				<pathelement location="../lib"/>
+			</classpath>
+			<arg line="-debug"/>
+		</haxe2js>
 	</target>
 	
 	<target name="package" depends="compile">

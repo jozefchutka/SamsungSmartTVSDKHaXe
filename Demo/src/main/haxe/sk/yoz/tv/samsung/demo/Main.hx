@@ -1,4 +1,4 @@
-package sk.yoz.tv.samsung.sample;
+package sk.yoz.tv.samsung.demo;
 
 import js.Browser;
 import js.Lib;
