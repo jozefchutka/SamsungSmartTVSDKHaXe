@@ -25,7 +25,7 @@
 	<property name="APP_TITLE" value="${ant.project.name}"/>
 	
 	<!-- Description of the application for packaging -->
-	<property name="APP_DESCRIPTION" value="Sample application"/>
+	<property name="APP_DESCRIPTION" value="Demo application"/>
 	
 	<!-- Name of packaged application file -->
 	<property name="APP_FILENAME" value="${APP_ID}.zip"/>
@@ -107,7 +107,7 @@
 					<token key="TITLE" value="${APP_TITLE}"/>
 					<token key="FILESIZE" value="${APP_FILESIZE}"/>
 					<token key="DESCRIPTION" value="${APP_DESCRIPTION}"/>
-					<token key="DOWNLOAD_LINK" value="${APP_DOWNLOAD_LINK}"/>
+					<token key="DOWNLOAD_LINK" value="${APP_HTTP_ROOT}/Widget/${APP_FILENAME}"/>
 				</replacetokens>
 			</filterchain>
 		</copy>

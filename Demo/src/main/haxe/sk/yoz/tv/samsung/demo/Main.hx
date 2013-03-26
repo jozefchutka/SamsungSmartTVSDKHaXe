@@ -3,14 +3,18 @@ package sk.yoz.tv.samsung.demo;
 import js.Browser;
 import js.Lib;
 import js.html.KeyboardEvent;
+
 import samsung.tv.v4.common.api.Widget;
 import samsung.tv.v4.common.api.TVKeyValue;
+
+import sk.yoz.tv.samsung.demo.mvc.MainContext;
+import sk.yoz.tv.samsung.demo.view.MainView;
 
 class Main
 {
 	private var widgetAPI:Widget;
 	private var tvKey:TVKeyValue;
-
+	
 	public static function main()
 	{
 		new Main();
@@ -26,10 +30,11 @@ class Main
 	
 	public function onLoad()
 	{
-		Lib.alert("onLoad");
-		
 		enableKeys();
 		widgetAPI.sendReadyEvent();
+		
+		var view = new MainView();
+		var context = new MainContext(view);
 	}
 	
 	public function onUnload()

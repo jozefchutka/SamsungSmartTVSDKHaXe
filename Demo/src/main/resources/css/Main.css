@@ -11,3 +11,8 @@ body
 	width: 960px;
 	height: 540px;
 }
+
+div
+{
+	border: 2px solid red;
+}
